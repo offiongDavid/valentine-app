@@ -33,12 +33,19 @@ async function createLink() {
   });
 
   const data = await res.json();
+  window.location.href = data.link;
 
   loading.classList.add('hidden');
   btn.disabled = false;
+const linkEl = document.getElementById('link');
 
   document.getElementById('linkBox').classList.remove('hidden');
-  document.getElementById('link').innerText = data.link;
+ linkEl.innerHTML = `
+  <a href="${data.link}" 
+     class="text-pink-600 underline font-semibold">
+     Click here 💖
+  </a>
+`;
   document.getElementById('previewText').innerText =
     `${senderName} is asking ${receiverName} to be their Valentine 💖`;
 }
