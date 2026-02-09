@@ -25,7 +25,7 @@ router.post('/create', async (req, res) => {
   await val.save();
 
   res.json({
-    link: `http://localhost:3000/ask/${uniqueId}`
+    link: `/ask/${uniqueId}`
   });
 });
 
