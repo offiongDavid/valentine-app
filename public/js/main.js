@@ -1,6 +1,8 @@
 
 const pathParts = window.location.pathname.split('/');
 const pageName = pathParts[pathParts.length - 1];
+let generatedLink = '';
+
 
 
 const id = pathParts.length > 2 ? pathParts[pathParts.length - 1] : null;
@@ -32,18 +34,20 @@ async function createLink() {
     body: JSON.stringify({ senderName, receiverName })
   });
 
-  const data = await res.json();
-  // window.location.href = data.link;
-
   loading.classList.add('hidden');
   btn.disabled = false;
+  const data = await res.json();
+  generatedLink = data.link;
+  // window.location.href = data.link;
+
 const linkEl = document.getElementById('link');
 
   document.getElementById('linkBox').classList.remove('hidden');
- linkEl.innerHTML = `
-  <a href="${data.link}" 
+linkEl.innerHTML = `
+  <a href="${generatedLink}" 
+     target="_blank"
      class="text-pink-600 underline font-semibold">
-     Click here 💖
+     ${generatedLink}
   </a>
 `;
   document.getElementById('previewText').innerText =
@@ -51,21 +55,26 @@ const linkEl = document.getElementById('link');
 }
 
 function copyLink() {
-  const linkEl = document.getElementById('link');
-  linkEl.innerHTML = `
-  <a href="${data.link}" 
-     class="text-pink-600 underline font-semibold">
-     Click here 💖
-  </a>
-`;
-  navigator.clipboard.writeText(linkEl.innerText);
-  alert('Link copied');
+  if (!generatedLink) {
+    alert('No link to copy');
+    return;
+  }
+
+  navigator.clipboard.writeText(generatedLink);
+  alert('Link copied 💖');
 }
 
 function shareWhatsApp() {
-  const link = document.getElementById('link').innerText;
-  const msg = `Someone is asking you something special 💖\n${link}`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+  if (!generatedLink) {
+    alert('No link to share');
+    return;
+  }
+
+  const msg = `Someone is asking you something special 💖\n${generatedLink}`;
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(msg)}`,
+    '_blank'
+  );
 }
 
 
