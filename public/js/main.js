@@ -37,7 +37,9 @@ async function createLink() {
   loading.classList.add('hidden');
   btn.disabled = false;
   const data = await res.json();
-  generatedLink = data.link;
+generatedLink = data.link.startsWith('http')
+  ? data.link
+  : `${window.location.origin}${data.link}`;
   // window.location.href = data.link;
 
 const linkEl = document.getElementById('link');
