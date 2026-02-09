@@ -25,10 +25,12 @@ router.post('/create', async (req, res) => {
 
   await val.save();
 
-  const fullLink = `${req.protocol}://${req.get('host')}/ask/${uniqueId}`;
-
-  res.json({ link: fullLink });
+  res.json({
+    askLink: `${req.protocol}://${req.get('host')}/ask/${uniqueId}`,
+    statusLink: `${req.protocol}://${req.get('host')}/status/${uniqueId}`
+  });
 });
+
 
 
 router.get('/ask/:id', async (req, res) => {
@@ -64,13 +66,18 @@ router.post('/respond/:id', async (req, res) => {
   res.json({ success: true });
 });
 
-router.get('/status/:id', async (req, res) => {
+router.get('/status/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, '../views/status.html'));
+});
+
+router.get('/api/status/:id', async (req, res) => {
   const val = await Valentine.findOne({ uniqueId: req.params.id });
   if (!val) return res.json(null);
 
   res.json({ response: val.response });
 });
-  
+
+
 
 
 module.exports = router;

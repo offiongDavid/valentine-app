@@ -2,6 +2,7 @@
 const pathParts = window.location.pathname.split('/');
 const pageName = pathParts[pathParts.length - 1];
 let generatedLink = '';
+let statusLink = '';
 
 
 
@@ -37,21 +38,36 @@ async function createLink() {
   loading.classList.add('hidden');
   btn.disabled = false;
   const data = await res.json();
-generatedLink = data.link.startsWith('http')
-  ? data.link
-  : `${window.location.origin}${data.link}`;
-  // window.location.href = data.link;
 
-const linkEl = document.getElementById('link');
+  generatedLink = data.askLink;
+statusLink = data.statusLink;
 
-  document.getElementById('linkBox').classList.remove('hidden');
-linkEl.innerHTML = `
-  <a href="${generatedLink}" 
-     target="_blank"
-     class="text-pink-600 underline font-semibold">
-     ${generatedLink}
-  </a>
+const linkBox = document.getElementById('linkBox');
+
+linkBox.classList.remove('hidden');
+linkBox.innerHTML = `
+  <div class="space-y-3 text-sm break-all">
+
+    <p class="font-semibold text-gray-700">
+      💌 Share this link
+    </p>
+    <a href="${generatedLink}" target="_blank"
+       class="text-pink-600 underline">
+      ${generatedLink}
+    </a>
+
+    <p class="font-semibold text-gray-700 mt-4">
+      👀 Check response
+    </p>
+    <a href="${statusLink}" target="_blank"
+       class="text-blue-600 underline">
+      ${statusLink}
+    </a>
+
+  </div>
 `;
+
+
   document.getElementById('previewText').innerText =
     `${senderName} is asking ${receiverName} to be their Valentine 💖`;
 }
@@ -190,7 +206,7 @@ setInterval(updateCountdown, 60_000);
 async function checkResponse() {
   if (!id) return;
 
-  const res = await fetch(`/status/${id}`);
+  const res = await fetch(`/api/status/${id}`);
   const data = await res.json();
 
   const el = document.getElementById('senderResult');
@@ -204,6 +220,4 @@ async function checkResponse() {
     el.innerText = '💔 NO';
   }
 }
-
-setInterval(checkResponse, 3000);
 
