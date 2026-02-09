@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Will You Be My Valentine? 💖</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: bgMove 10s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes bgMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+
+    .floating-heart {
+      position: absolute;
+      bottom: -20px;
+      animation: floatUp linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+
+
+    .card {
+      animation: slideIn 1.2s ease forwards;
+    }
+
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+
+    .glow {
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff69b4;
+      }
+
+      to {
+        text-shadow: 0 0 25px #ff1493;
+      }
+    }
+
+
+    .yes-btn {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.08);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+
+  <div id="hearts"></div>
+
+
+  <div class="card bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl text-center w-[22rem]">
+    <h1 id="question" class="text-3xl font-bold mb-6 text-pink-600 glow"></h1>
+
+    <div class="flex justify-center gap-4 mt-4">
+      <button onclick="respond('Yes')"
+        class="yes-btn bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full shadow-lg transition">
+        YES ❤️
+      </button>
+
+     <button onclick="respond('No')" class="bg-gray-500 text-white px-4 py-2 rounded-full shadow-lg transition">NO 💔</button>
+    </div>
+  </div>
+
+  <script src="/public/js/main.js"></script>
+  <script>
+    let clicks = 0;
+    document.body.addEventListener('click', () => {
+      clicks++;
+      if (clicks === 5) {
+        alert('💖 You found the secret message! Love wins.');
+      }
+    });
+
+  </script>
+
+  <script>
+
+    const heartContainer = document.getElementById('hearts');
+    const hearts = ['❤️', '💖', '💘', '💕', '💞'];
+
+    for (let i = 0; i < 25; i++) {
+      const h = document.createElement('div');
+      h.className = 'floating-heart';
+      h.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.animationDuration = 5 + Math.random() * 6 + 's';
+      h.style.fontSize = 16 + Math.random() * 20 + 'px';
+      heartContainer.appendChild(h);
+    }
+
+  </script>
+
+</body>
+
+</html>
