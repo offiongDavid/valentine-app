@@ -153,7 +153,7 @@ function loadResponsePage() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadAskPage();
+  // loadAskPage();
   loadResponsePage();
 });
 
@@ -219,5 +219,15 @@ async function checkResponse() {
   } else {
     el.innerText = '💔 NO';
   }
+}
+
+const path = window.location.pathname;
+
+if (path.startsWith('/ask/')) {
+  loadAskPage();
+}
+
+if (path.startsWith('/status/')) {
+  loadStatusPage();
 }
 
