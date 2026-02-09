@@ -33,7 +33,7 @@ async function createLink() {
   });
 
   const data = await res.json();
-  window.location.href = data.link;
+  // window.location.href = data.link;
 
   loading.classList.add('hidden');
   btn.disabled = false;
@@ -53,12 +53,12 @@ const linkEl = document.getElementById('link');
 function copyLink() {
   const text = document.getElementById('link').innerText;
   navigator.clipboard.writeText(text);
-  alert('Link copied 💕');
+  alert('Link copied ');
 }
 
 function shareWhatsApp() {
   const link = document.getElementById('link').innerText;
-  const msg = `Someone is asking you something special 💖\n${link}`;
+  const msg = `Someone is asking you something special 💖\n${data.link}`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
