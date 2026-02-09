@@ -26,7 +26,7 @@ async function createLink() {
   loading.classList.remove('hidden');
   btn.disabled = true;
 
-  const res = await fetch('http://localhost:3000/create', {
+  const res = await fetch('/create', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ senderName, receiverName })
@@ -61,7 +61,7 @@ async function loadAskPage() {
   if (!questionEl || !id) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/data/${id}`);
+    const res = await fetch(`/data/${id}`);
     const data = await res.json();
 
     if (!data || !data.receiverName) {
@@ -78,7 +78,7 @@ async function loadAskPage() {
 async function respond(answer) {
   if (!id) return;
 
-  await fetch(`http://localhost:3000/respond/${id}`, {
+  await fetch(`/respond/${id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ response: answer })
