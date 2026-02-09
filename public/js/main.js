@@ -51,14 +51,20 @@ const linkEl = document.getElementById('link');
 }
 
 function copyLink() {
-  const text = document.getElementById('link').innerText;
-  navigator.clipboard.writeText(text);
-  alert('Link copied ');
+  const linkEl = document.getElementById('link');
+  linkEl.innerHTML = `
+  <a href="${data.link}" 
+     class="text-pink-600 underline font-semibold">
+     Click here 💖
+  </a>
+`;
+  navigator.clipboard.writeText(linkEl.innerText);
+  alert('Link copied');
 }
 
 function shareWhatsApp() {
   const link = document.getElementById('link').innerText;
-  const msg = `Someone is asking you something special 💖\n${data.link}`;
+  const msg = `Someone is asking you something special 💖\n${link}`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
