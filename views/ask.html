@@ -113,14 +113,18 @@
   <div class="card bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl text-center w-[22rem]">
     <h1 id="question" class="text-3xl font-bold mb-6 text-pink-600 glow"></h1>
 
-    <div class="flex justify-center gap-4 mt-4">
-      <button onclick="respond('Yes')"
-        class="yes-btn bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full shadow-lg transition">
-        YES ❤️
-      </button>
+    <div id="buttons" class="flex justify-center gap-4 mt-4">
+  <button onclick="respond('yes')"
+    class="yes-btn bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full shadow-lg transition">
+    YES ❤️
+  </button>
 
-     <button onclick="respond('No')" class="bg-gray-500 text-white px-4 py-2 rounded-full shadow-lg transition">NO 💔</button>
-    </div>
+  <button onclick="respond('no')"
+    class="bg-gray-500 text-white px-4 py-2 rounded-full shadow-lg transition">
+    NO 💔
+  </button>
+</div>
+
   </div>
 
   <script src="/public/js/main.js"></script>

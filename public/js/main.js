@@ -81,22 +81,30 @@ function shareWhatsApp() {
 
 
 async function loadAskPage() {
+  if (!id) return;
+
+  const res = await fetch(`/data/${id}`);
+  const data = await res.json();
+
   const questionEl = document.getElementById('question');
-  if (!questionEl || !id) return;
+  const buttons = document.getElementById('buttons');
 
-  try {
-    const res = await fetch(`/data/${id}`);
-    const data = await res.json();
-
-    if (!data || !data.receiverName) {
-      questionEl.innerText = 'Invalid or expired link 💔';
-      return;
-    }
-
-    questionEl.innerText = `Hi ${data.receiverName}, it's ${data.senderName} 💕\nWill you be my Valentine?`;
-  } catch (err) {
-    questionEl.innerText = 'Something went wrong 😢';
+  if (!data) {
+    questionEl.innerText = 'Invalid or expired link 💔';
+    return;
   }
+
+  if (data.response) {
+    questionEl.innerText =
+      data.response === 'yes'
+        ? 'This Valentine request was accepted 💖'
+        : 'This Valentine request was declined 💔';
+    buttons.style.display = 'none';
+    return;
+  }
+
+  questionEl.innerText =
+    `Hi ${data.receiverName}, it's ${data.senderName} 💕\nWill you be my Valentine?`;
 }
 
 async function respond(answer) {
@@ -178,3 +186,24 @@ function updateCountdown() {
 
 updateCountdown();
 setInterval(updateCountdown, 60_000);
+
+async function checkResponse() {
+  if (!id) return;
+
+  const res = await fetch(`/status/${id}`);
+  const data = await res.json();
+
+  const el = document.getElementById('senderResult');
+  if (!el) return;
+
+  if (!data || !data.response) {
+    el.innerText = 'Waiting for response… 💌';
+  } else if (data.response === 'yes') {
+    el.innerText = '🎉 YES 💖';
+  } else {
+    el.innerText = '💔 NO';
+  }
+}
+
+setInterval(checkResponse, 3000);
+

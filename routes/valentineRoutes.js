@@ -19,14 +19,15 @@ router.post('/create', async (req, res) => {
   const val = new Valentine({
     senderName,
     receiverName,
-    uniqueId
+    uniqueId,
+    response: null
   });
 
   await val.save();
 
-  res.json({
-    link: `/ask/${uniqueId}`
-  });
+  const fullLink = `${req.protocol}://${req.get('host')}/ask/${uniqueId}`;
+
+  res.json({ link: fullLink });
 });
 
 
@@ -37,18 +38,39 @@ router.get('/ask/:id', async (req, res) => {
 
 router.get('/data/:id', async (req, res) => {
   const data = await Valentine.findOne({ uniqueId: req.params.id });
-  res.json(data);
+  if (!data) return res.json(null);
+
+  res.json({
+    senderName: data.senderName,
+    receiverName: data.receiverName,
+    response: data.response
+  });
 });
 
 
 router.post('/respond/:id', async (req, res) => {
-  await Valentine.findOneAndUpdate(
-    { uniqueId: req.params.id },
-    { response: req.body.response }
-  );
+  const { response } = req.body;
+
+  const val = await Valentine.findOne({ uniqueId: req.params.id });
+  if (!val) return res.status(404).json({ error: 'Not found' });
+
+  if (val.response) {
+    return res.json({ alreadyResponded: true });
+  }
+
+  val.response = response.toLowerCase();
+  await val.save();
 
   res.json({ success: true });
 });
+
+router.get('/status/:id', async (req, res) => {
+  const val = await Valentine.findOne({ uniqueId: req.params.id });
+  if (!val) return res.json(null);
+
+  res.json({ response: val.response });
+});
+  
 
 
 module.exports = router;
